@@ -15,9 +15,6 @@ public class AnimacionJugador : MonoBehaviour
     [Header("Sprites D - Derecha")]
     public Sprite[] spritesDerecha;
 
-    [Header("Sprites Quietos")]
-    public Sprite[] spritesIdle;
-
     [Header("Velocidad de Animación")]
     public float fps = 8f;
 
@@ -33,7 +30,8 @@ public class AnimacionJugador : MonoBehaviour
 
     void Start()
     {
-        spritesActuales = spritesIdle;
+        // Iniciamos mirando hacia abajo por defecto
+        spritesActuales = spritesAbajo;
         AplicarFrame();
     }
 
@@ -46,13 +44,29 @@ public class AnimacionJugador : MonoBehaviour
         bool a = Keyboard.current.aKey.isPressed;
         bool d = Keyboard.current.dKey.isPressed;
 
-        if (w) CambiarSprites(spritesArriba);
-        else if (s) CambiarSprites(spritesAbajo);
-        else if (a) CambiarSprites(spritesIzquierda);
-        else if (d) CambiarSprites(spritesDerecha);
-        else CambiarSprites(spritesIdle);
+        // Comprobamos si el jugador se está moviendo
+        bool enMovimiento = w || s || a || d;
 
-        AvanzarFrame();
+        if (enMovimiento)
+        {
+            if (w) CambiarSprites(spritesArriba);
+            else if (s) CambiarSprites(spritesAbajo);
+            else if (a) CambiarSprites(spritesIzquierda);
+            else if (d) CambiarSprites(spritesDerecha);
+
+            // Solo avanzamos los frames si el personaje camina
+            AvanzarFrame();
+        }
+        else
+        {
+            // AL SOLTAR LAS TECLAS:
+            // Opcional: Si quieres que al detenerse vuelva a su postura inicial 
+            // de esa misma dirección (el frame 0, con los pies juntos), descomenta la siguiente línea:
+            // DetenerEnPrimerFrame();
+            
+            // Si lo dejas tal como está, se quedará quieto exactamente 
+            // en el último frame en el que iba caminando.
+        }
     }
 
     private void CambiarSprites(Sprite[] nuevosSprites)
@@ -85,5 +99,16 @@ public class AnimacionJugador : MonoBehaviour
         if (frameActual >= spritesActuales.Length) frameActual = 0;
         if (spritesActuales[frameActual] != null)
             spriteRenderer.sprite = spritesActuales[frameActual];
+    }
+
+    // Función auxiliar por si prefieres que al soltar la tecla 
+    // se quede mirando a esa dirección pero en postura de reposo (frame 0)
+    private void DetenerEnPrimerFrame()
+    {
+        if (frameActual != 0)
+        {
+            frameActual = 0;
+            AplicarFrame();
+        }
     }
 }

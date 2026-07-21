@@ -58,14 +58,14 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-
+        /*
         // Asegurar sistema de audio
         if (DisasterAudioSystem.Instance == null)
         {
             GameObject audioGO = new GameObject("DisasterAudioSystem");
             audioGO.AddComponent<DisasterAudioSystem>();
         }
-
+        */
         // Asegurar sistema de partículas de ceniza
         if (FindFirstObjectByType<EfectoCenizaVolcanica>() == null)
         {
@@ -165,6 +165,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(EfectoSacudidaCamara(0.4f, 0.3f));
         }
 
+        /*
         // Reproducir sonido según fase
         if (DisasterAudioSystem.Instance != null)
         {
@@ -177,6 +178,8 @@ public class GameManager : MonoBehaviour
                 DisasterAudioSystem.Instance.ReproducirAcordeTragico();
             }
         }
+        */
+
 
         // Mostrar Modal
         if (uiManager != null)
