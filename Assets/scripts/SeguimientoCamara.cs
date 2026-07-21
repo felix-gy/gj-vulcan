@@ -2,69 +2,63 @@ using UnityEngine;
 
 public class SeguimientoCamara : MonoBehaviour
 {
-    [Header("Objetivo a seguir")]
-    public Transform jugador; // Arrastra tu objeto Player aquí
+    [Header("Posición Isométrica")]
+    public Vector3 offsetPosicion = new Vector3(0f, 4.5f, -3.5f);
+    public float anguloInclinacion = 45f;
+    public float fovDeseado = 35f;
 
-    [Header("Configuración de 2.5D Estrecha")]
-    public Vector3 offset = new Vector3(0f, 2.0f, -2.2f); // Súper cercano al personaje y pies
-    public float suavidad = 10f;
-    public float fovDeseado = 30f; // Campo de visión estrecho y enfocado
+    [Header("Efecto de Respiración")]
+    public bool respiracionActiva = true;
+    public float amplitudRespiracion = 0.06f;
+    public float velocidadRespiracion = 0.8f;
+
+    [Header("Balanceo al Moverse")]
+    public bool swayActivo = true;
+    public float amplitudSway = 0.08f;
+    public float suavidadSway = 3f;
 
     private Camera cam;
+    private Rigidbody rb;
+    private Vector3 posicionBase;
+    private float swayActual = 0f;
 
     void Start()
     {
         cam = GetComponent<Camera>();
-        if (cam == null) cam = Camera.main;
-        AsegurarJugador();
-        AjustarEnfoqueCamara();
-    }
+        rb = GetComponentInParent<Rigidbody>();
 
-    private void AjustarEnfoqueCamara()
-    {
+        transform.localPosition = offsetPosicion;
+        transform.localRotation = Quaternion.Euler(anguloInclinacion, 0f, 0f);
+
         if (cam != null)
         {
             if (cam.orthographic)
-            {
-                cam.orthographicSize = 2.2f;
-            }
+                cam.orthographicSize = 4f;
             else
-            {
                 cam.fieldOfView = fovDeseado;
-            }
-            // Inclinar cámara hacia abajo hacia el personaje
-            cam.transform.rotation = Quaternion.Euler(32f, 0f, 0f);
         }
-    }
 
-    private void AsegurarJugador()
-    {
-        if (jugador == null)
-        {
-            GameObject p = GameObject.FindWithTag("Player");
-            if (p != null) jugador = p.transform;
-            else
-            {
-                move25d pScript = FindFirstObjectByType<move25d>();
-                if (pScript != null) jugador = pScript.transform;
-            }
-        }
+        posicionBase = transform.localPosition;
     }
 
     void LateUpdate()
     {
-        if (jugador == null)
+        Vector3 offset = Vector3.zero;
+
+        if (respiracionActiva)
         {
-            AsegurarJugador();
-            if (jugador == null) return;
+            float respiracion = Mathf.Sin(Time.time * velocidadRespiracion) * amplitudRespiracion;
+            offset.y += respiracion;
         }
 
-        AjustarEnfoqueCamara();
+        if (swayActivo && rb != null)
+        {
+            float velocidadX = rb.linearVelocity.x;
+            float swayObjetivo = velocidadX * amplitudSway;
+            swayActual = Mathf.Lerp(swayActual, swayObjetivo, Time.deltaTime * suavidadSway);
+            offset.x += swayActual;
+        }
 
-        // Calculamos la posición exacta cercana al personaje
-        Vector3 posicionDeseada = jugador.position + offset;
-
-        // Movimiento fluido de persecución cercana
-        transform.position = Vector3.Lerp(transform.position, posicionDeseada, suavidad * Time.deltaTime);
+        transform.localPosition = posicionBase + offset;
     }
 }

@@ -1107,6 +1107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 314078459}
   - component: {fileID: 314078460}
+  - component: {fileID: 314078461}
   m_Layer: 0
   m_Name: SprteGraphics
   m_TagString: Untagged
@@ -1188,6 +1189,27 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &314078461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314078458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 813b7f1fa5e169000bc29fca51c7c425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimacionJugador
+  spritesArriba:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  spritesAbajo: []
+  spritesIzquierda: []
+  spritesDerecha: []
+  spritesIdle: []
+  fps: 8
 --- !u!1001 &314426127
 PrefabInstance:
   m_ObjectHideFlags: 0

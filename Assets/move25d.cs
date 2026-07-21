@@ -7,6 +7,8 @@ public class move25d : MonoBehaviour
     private Rigidbody rb;
     private Vector3 movimiento;
 
+    public Vector3 MovimientoActual => movimiento;
+
     [Header("Referencia al Sprite")]
     public SpriteRenderer spriteRenderer;
 
@@ -46,16 +48,6 @@ public class move25d : MonoBehaviour
 
     void Update()
     {
-        // Girar el sprite según dirección horizontal
-        if (movimiento.x < 0 && spriteRenderer != null)
-        {
-            spriteRenderer.flipX = true;  // Mira a la izquierda
-        }
-        else if (movimiento.x > 0 && spriteRenderer != null)
-        {
-            spriteRenderer.flipX = false; // Mira a la derecha
-        }
-
         // Orientar la luz foco de la linterna según la dirección del movimiento
         if (linterna != null && movimiento.sqrMagnitude > 0.01f)
         {
