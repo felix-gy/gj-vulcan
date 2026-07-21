@@ -13,9 +13,12 @@ public class move25d : MonoBehaviour
     [Header("Componentes de Atmósfera y Linterna")]
     public LinternaJugador linterna;
 
+    private MaterialPropertyBlock propBlock;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        propBlock = new MaterialPropertyBlock();
 
         // Si no hay linterna asignada, buscarla o añadirla
         if (linterna == null) linterna = GetComponent<LinternaJugador>();
@@ -77,5 +80,41 @@ public class move25d : MonoBehaviour
         {
             rb.MovePosition(rb.position + movimiento * velocidad * Time.fixedDeltaTime);
         }
+    }
+
+    public void AplicarEfectoFase(GriefPhase fase)
+    {
+        if (spriteRenderer == null) return;
+
+        Color tintColor;
+        Color emisionColor;
+
+        switch (fase)
+        {
+            case GriefPhase.Aceptar:
+                tintColor = new Color(0.7f, 0.5f, 0.7f, 1f);
+                emisionColor = new Color(0.6f, 0.2f, 0.8f, 1f);
+                break;
+
+            case GriefPhase.Reconstruir:
+                tintColor = new Color(1.0f, 0.9f, 0.7f, 1f);
+                emisionColor = new Color(1.5f, 1.2f, 0.5f, 1f);
+                break;
+
+            case GriefPhase.Procesar:
+            default:
+                tintColor = new Color(0.5f, 0.55f, 0.7f, 1f);
+                emisionColor = new Color(0.2f, 0.3f, 0.8f, 1f);
+                break;
+        }
+
+        spriteRenderer.color = tintColor;
+
+        spriteRenderer.GetPropertyBlock(propBlock);
+        propBlock.SetColor("_EmissionColor", emisionColor);
+        spriteRenderer.SetPropertyBlock(propBlock);
+
+        Material mat = spriteRenderer.material;
+        mat.EnableKeyword("_EMISSION");
     }
 }

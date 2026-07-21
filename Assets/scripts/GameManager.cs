@@ -150,6 +150,10 @@ public class GameManager : MonoBehaviour
 
         if (atmosphereManager != null) atmosphereManager.TransicionarAFase(fase);
         if (linternaJugador != null) linternaJugador.AjustarPorFase(fase);
+
+        move25d jugadorMove = FindFirstObjectByType<move25d>();
+        if (jugadorMove != null) jugadorMove.AplicarEfectoFase(fase);
+
         if (uiManager != null) uiManager.ActualizarHUD(hora, $"Fase {((int)fase + 1)}: {fase}", colorFase, objetivo);
     }
 
