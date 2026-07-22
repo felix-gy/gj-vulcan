@@ -30,7 +30,7 @@ public class PersonajeInteraccion : MonoBehaviour
     public string mensaje = "¡Parece que hay algo grabado en esta roca...! Es una pista.";
 
     private bool jugadorCerca = false;
-    private bool dialogoAbierto = false;
+    private bool dialogoAbierto = false;    
     private bool yaFueUsado = false; 
 
     void Update()
