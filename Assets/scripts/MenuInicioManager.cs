@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro; // Necesario para usar TextMeshPro (evita pixeleado de UI)
 
 public class MenuInicioManager : MonoBehaviour
 {
@@ -45,39 +46,19 @@ public class MenuInicioManager : MonoBehaviour
             eventSystemGO.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
         }
 
-
-
-        // 4. Crear Título del Juego
+        // 3. Crear Título del Juego con TextMeshPro (SDF, no se pixelea)
         GameObject tituloGO = new GameObject("Titulo");
         tituloGO.transform.SetParent(canvasGO.transform, false);
-        Text txtTitulo = tituloGO.AddComponent<Text>();
-        txtTitulo.text = "VULCAN";
         
-        // Obtener una fuente predeterminada con bloque try-catch para evitar excepciones de carga
-        Font defaultFont = null;
-        try
-        {
-            defaultFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        }
-        catch {}
-
-        if (defaultFont == null)
-        {
-            try
-            {
-                defaultFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            }
-            catch {}
-        }
-        txtTitulo.font = defaultFont;
-        txtTitulo.fontSize = 120;
-        txtTitulo.alignment = TextAnchor.MiddleCenter;
+        TextMeshProUGUI txtTitulo = tituloGO.AddComponent<TextMeshProUGUI>();
+        txtTitulo.text = "VULCAN";
+        txtTitulo.fontSize = 130;
+        txtTitulo.alignment = TextAlignmentOptions.Center;
         txtTitulo.color = new Color(0.9f, 0.25f, 0.1f); // Rojo lava brillante
-
-        // Agregar una sombra sutil al título
-        Shadow shadow = tituloGO.AddComponent<Shadow>();
-        shadow.effectColor = Color.black;
-        shadow.effectDistance = new Vector2(5, -5);
+        
+        // Activar sombra y outline en TMPro para darle aspecto premium
+        txtTitulo.outlineColor = Color.black;
+        txtTitulo.outlineWidth = 0.2f;
 
         RectTransform tituloRect = tituloGO.GetComponent<RectTransform>();
         tituloRect.anchorMin = new Vector2(0.5f, 0.7f);
@@ -85,7 +66,7 @@ public class MenuInicioManager : MonoBehaviour
         tituloRect.sizeDelta = new Vector2(800, 200);
         tituloRect.anchoredPosition = Vector2.zero;
 
-        // 5. Crear Botón de Inicio
+        // 4. Crear Botón de Inicio
         DefaultControls.Resources uiResources = new DefaultControls.Resources();
         GameObject buttonGO = DefaultControls.CreateButton(uiResources);
         buttonGO.name = "BotonInicio";
@@ -110,15 +91,19 @@ public class MenuInicioManager : MonoBehaviour
         buttonRect.sizeDelta = new Vector2(300, 80);
         buttonRect.anchoredPosition = Vector2.zero;
 
-        // Estilizar texto del botón
-        Text btnText = buttonGO.GetComponentInChildren<Text>();
-        if (btnText != null)
+        // Reemplazar texto legado del botón por TextMeshProUGUI (más nítido)
+        Text legacyText = buttonGO.GetComponentInChildren<Text>();
+        if (legacyText != null)
         {
+            GameObject textGO = legacyText.gameObject;
+            DestroyImmediate(legacyText); // Eliminar el texto borroso legado
+
+            TextMeshProUGUI btnText = textGO.AddComponent<TextMeshProUGUI>();
             btnText.text = "INICIAR JUEGO";
-            btnText.font = defaultFont;
             btnText.fontSize = 28;
+            btnText.alignment = TextAlignmentOptions.Center;
             btnText.color = Color.white;
-            btnText.fontStyle = FontStyle.Bold;
+            btnText.fontStyle = FontStyles.Bold;
         }
 
         // Asignar el evento Click al botón
