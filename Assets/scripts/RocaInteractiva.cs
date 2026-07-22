@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro; // Necesario para usar TextMeshPro en la UI
+using UnityEngine.UI; // ¡NUEVO! Necesario para manipular componentes de Imagen en UI
 using UnityEngine.InputSystem; // Necesario para el nuevo Input System
 
 public class RocaInteractiva : MonoBehaviour
@@ -7,8 +8,11 @@ public class RocaInteractiva : MonoBehaviour
     [Header("Conexión con la UI")]
     public GameObject panelDialogo; // Arrastra aquí tu PanelDialogo
     public TextMeshProUGUI textoDialogo; // Arrastra aquí tu TextoDialogo
+    public Image imagenUI; // ¡NUEVO! Arrastra aquí el componente Image de tu PanelDialogo
 
     [Header("Contenido del Diálogo")]
+    public Sprite imagenPersonalizada; // ¡NUEVO! Arrastra aquí la foto/sprite propia de ESTA roca
+
     [TextArea(3, 5)]
     public string mensaje = "¡Parece que hay algo grabado en esta roca...! Es una pista.";
 
@@ -17,7 +21,7 @@ public class RocaInteractiva : MonoBehaviour
 
     void Update()
     {
-        // Si el jugador está cerca y presiona la tecla E (Nuevo Input System)...
+        // Si el jugador está cerca y presiona la tecla Enter (Nuevo Input System)...
         if (jugadorCerca && Keyboard.current.enterKey.wasPressedThisFrame)
         {
             AlternarDialogo();
@@ -30,16 +34,33 @@ public class RocaInteractiva : MonoBehaviour
 
         if (dialogoAbierto)
         {
-            // Ponemos el texto en la UI, encendemos el panel y pausamos el juego
+            // 1. Asignamos el texto
             textoDialogo.text = mensaje;
+
+            // 2. Asignamos la imagen si la UI y la foto existen
+            if (imagenUI != null)
+            {
+                if (imagenPersonalizada != null)
+                {
+                    imagenUI.sprite = imagenPersonalizada;
+                    imagenUI.gameObject.SetActive(true); // La mostramos
+                }
+                else
+                {
+                    // Si esta roca en particular no tiene foto, ocultamos el cuadro de imagen
+                    imagenUI.gameObject.SetActive(false); 
+                }
+            }
+
+            // 3. Encendemos el panel
             panelDialogo.SetActive(true);
-           // Time.timeScale = 0f; // Pausa el movimiento mientras lees
+            // Time.timeScale = 0f; // Descomenta si deseas pausar el juego
         }
         else
         {
-            // Apagamos el panel y reanudamos el juego
+            // Apagamos el panel
             panelDialogo.SetActive(false);
-            //Time.timeScale = 1f;
+            // Time.timeScale = 1f;
         }
     }
 
@@ -60,12 +81,12 @@ public class RocaInteractiva : MonoBehaviour
         {
             jugadorCerca = false;
 
-            // Si el jugador se aleja (por error), nos aseguramos de cerrar la ventana
+            // Si el jugador se aleja, nos aseguramos de cerrar la ventana
             if (dialogoAbierto)
             {
                 dialogoAbierto = false;
                 panelDialogo.SetActive(false);
-                Time.timeScale = 1f;
+                // Time.timeScale = 1f;
             }
         }
     }
