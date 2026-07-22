@@ -43,6 +43,18 @@ public class UIManager : MonoBehaviour
         AsegurarInterfazCanvas();
         OcultarModal();
         if (epilogoContainer != null) epilogoContainer.SetActive(false);
+
+        // Desactivar elementos del HUD según requerimientos del usuario
+        if (textHora != null) textHora.gameObject.SetActive(false);
+        if (textFase != null) textFase.gameObject.SetActive(false);
+        if (textObjetivo != null) textObjetivo.gameObject.SetActive(false);
+        if (textEstadoLinterna != null) textEstadoLinterna.gameObject.SetActive(false);
+
+        // Ocultar también el panel de fondo del HUD superior para limpiar la pantalla
+        if (textHora != null && textHora.transform.parent != null && textHora.transform.parent.name == "HUD_TopPanel")
+        {
+            textHora.transform.parent.gameObject.SetActive(false);
+        }
     }
 
     void Update()
