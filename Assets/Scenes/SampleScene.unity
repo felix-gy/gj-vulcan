@@ -1003,6 +1003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9443a10772593c450bf325a9e0aaeefe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PersonajeInteraccion
+  personajeID: madre
   panelDialogo: {fileID: 2132560481}
   textoDialogo: {fileID: 400009155}
   imagenUI: {fileID: 137603238}
@@ -1092,6 +1093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9443a10772593c450bf325a9e0aaeefe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PersonajeInteraccion
+  personajeID: padre
   panelDialogo: {fileID: 2132560481}
   textoDialogo: {fileID: 400009155}
   imagenUI: {fileID: 137603238}
@@ -1341,6 +1343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9443a10772593c450bf325a9e0aaeefe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PersonajeInteraccion
+  personajeID: hermano
   panelDialogo: {fileID: 2132560481}
   textoDialogo: {fileID: 400009155}
   imagenUI: {fileID: 137603238}
