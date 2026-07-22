@@ -55,6 +55,8 @@ public class UIManager : MonoBehaviour
         {
             textHora.transform.parent.gameObject.SetActive(false);
         }
+
+        StartCoroutine(RutinaBotonRescatistas());
     }
 
     void Update()
@@ -144,20 +146,7 @@ public class UIManager : MonoBehaviour
 
     public void MostrarEpilogo()
     {
-        if (modalContainer != null) modalContainer.SetActive(false);
-        if (epilogoContainer != null)
-        {
-            epilogoContainer.SetActive(true);
-            if (btnReiniciar != null)
-            {
-                btnReiniciar.onClick.RemoveAllListeners();
-                btnReiniciar.onClick.AddListener(() => {
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(
-                        UnityEngine.SceneManagement.SceneManager.GetActiveScene().name
-                    );
-                });
-            }
-        }
+        // Removido a petición del usuario
     }
 
     private void AsegurarInterfazCanvas()
@@ -192,10 +181,6 @@ public class UIManager : MonoBehaviour
             CrearModalDinamicamente(canvas.transform);
         }
 
-        if (epilogoContainer == null)
-        {
-            CrearEpilogoDinamicamente(canvas.transform);
-        }
     }
 
     private void CrearHUDDinamicamente(Transform parent)
@@ -365,66 +350,78 @@ public class UIManager : MonoBehaviour
         tBtn.text = "ACEPTAR Y AVANZAR";
     }
 
-    private void CrearEpilogoDinamicamente(Transform parent)
+
+
+    private IEnumerator RutinaBotonRescatistas()
     {
-        epilogoContainer = new GameObject("PantallaEpilogo", typeof(RectTransform), typeof(Image));
-        epilogoContainer.transform.SetParent(parent, false);
-        RectTransform rtEpilogo = epilogoContainer.GetComponent<RectTransform>();
-        rtEpilogo.anchorMin = Vector2.zero;
-        rtEpilogo.anchorMax = Vector2.one;
+        // Esperar 2 minutos (120 segundos)
+        yield return new WaitForSeconds(120f);
 
-        Image imgEpilogo = epilogoContainer.GetComponent<Image>();
-        imgEpilogo.color = new Color(0.08f, 0.06f, 0.04f, 0.98f);
+        Canvas canvas = FindFirstObjectByType<Canvas>();
+        if (canvas == null) yield break;
 
-        GameObject goTitle = new GameObject("EpilogoTitle", typeof(RectTransform), typeof(Text));
-        goTitle.transform.SetParent(epilogoContainer.transform, false);
-        RectTransform rtTitle = goTitle.GetComponent<RectTransform>();
-        rtTitle.anchorMin = new Vector2(0.1f, 0.75f);
-        rtTitle.anchorMax = new Vector2(0.9f, 0.9f);
-        epilogoTitulo = goTitle.GetComponent<Text>();
-        epilogoTitulo.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        epilogoTitulo.fontSize = 32;
-        epilogoTitulo.fontStyle = FontStyle.Bold;
-        epilogoTitulo.alignment = TextAnchor.MiddleCenter;
-        epilogoTitulo.color = new Color(1f, 0.75f, 0.3f);
-        epilogoTitulo.text = "EL AMANECER DE LA ESPERANZA";
+        // Crear botón de rescate
+        GameObject btnRescateGO = new GameObject("BtnRescate", typeof(RectTransform), typeof(Image), typeof(Button));
+        btnRescateGO.transform.SetParent(canvas.transform, false);
 
-        GameObject goMsg = new GameObject("EpilogoMsg", typeof(RectTransform), typeof(Text));
-        goMsg.transform.SetParent(epilogoContainer.transform, false);
-        RectTransform rtMsg = goMsg.GetComponent<RectTransform>();
-        rtMsg.anchorMin = new Vector2(0.12f, 0.25f);
-        rtMsg.anchorMax = new Vector2(0.88f, 0.70f);
-        epilogoMensaje = goMsg.GetComponent<Text>();
-        epilogoMensaje.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        epilogoMensaje.fontSize = 18;
-        epilogoMensaje.alignment = TextAnchor.MiddleCenter;
-        epilogoMensaje.color = new Color(0.95f, 0.9f, 0.8f);
-        epilogoMensaje.text = "El manto asfixiante de la erupción comienza a aclararse cuando el sol se alza en el horizonte. Los rayos dorados tiñen de calidez la ceniza del suelo.\n\n" +
-                              "Aunque has perdido pilares en tu vida, la presencia viva de tu leal mascota Toby y los supervivientes te recuerdan que sigues aquí.\n\n" +
-                              "\"La reconstrucción no niega la tragedia. La abraza como cicatrices de un camino donde prometemos sobrevivir, recordar y volver a florecer.\"";
+        RectTransform rtBtn = btnRescateGO.GetComponent<RectTransform>();
+        rtBtn.anchorMin = new Vector2(0.35f, 0.25f);
+        rtBtn.anchorMax = new Vector2(0.65f, 0.33f);
+        rtBtn.pivot = new Vector2(0.5f, 0.5f);
+        rtBtn.offsetMin = Vector2.zero;
+        rtBtn.offsetMax = Vector2.zero;
 
-        GameObject goBtn = new GameObject("BtnReiniciar", typeof(RectTransform), typeof(Image), typeof(Button));
-        goBtn.transform.SetParent(epilogoContainer.transform, false);
-        RectTransform rtBtn = goBtn.GetComponent<RectTransform>();
-        rtBtn.anchorMin = new Vector2(0.35f, 0.08f);
-        rtBtn.anchorMax = new Vector2(0.65f, 0.18f);
+        Image imgBtn = btnRescateGO.GetComponent<Image>();
+        imgBtn.color = new Color(0.8f, 0.25f, 0.15f, 0.95f);
 
-        Image imgBtn = goBtn.GetComponent<Image>();
-        imgBtn.color = new Color(0.2f, 0.6f, 0.35f);
+        Button btn = btnRescateGO.GetComponent<Button>();
 
-        btnReiniciar = goBtn.GetComponent<Button>();
-
-        GameObject goBtnText = new GameObject("TextBtnReiniciar", typeof(RectTransform), typeof(Text));
-        goBtnText.transform.SetParent(goBtn.transform, false);
+        // Crear texto del botón
+        GameObject goBtnText = new GameObject("TextBtnRescate", typeof(RectTransform), typeof(Text));
+        goBtnText.transform.SetParent(btnRescateGO.transform, false);
         RectTransform rtBtnText = goBtnText.GetComponent<RectTransform>();
         rtBtnText.anchorMin = Vector2.zero;
         rtBtnText.anchorMax = Vector2.one;
+        rtBtnText.offsetMin = Vector2.zero;
+        rtBtnText.offsetMax = Vector2.zero;
+
         Text tBtn = goBtnText.GetComponent<Text>();
         tBtn.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        tBtn.fontSize = 18;
+        tBtn.fontSize = 20;
         tBtn.fontStyle = FontStyle.Bold;
         tBtn.alignment = TextAnchor.MiddleCenter;
         tBtn.color = Color.white;
-        tBtn.text = "VOLVER A EMPEZAR";
+        tBtn.text = "IR CON LOS RESCATISTAS (60s)";
+        tBtn.horizontalOverflow = HorizontalWrapMode.Overflow;
+        tBtn.verticalOverflow = VerticalWrapMode.Overflow;
+
+        bool clicked = false;
+        btn.onClick.AddListener(() => {
+            clicked = true;
+        });
+
+        // Duración de 1 minuto (60 segundos)
+        float tiempoRestante = 60f;
+        while (tiempoRestante > 0f)
+        {
+            if (clicked)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("final_1");
+                yield break;
+            }
+
+            // Animación de pulso
+            float pulso = 1f + Mathf.Sin(Time.time * 5f) * 0.04f;
+            rtBtn.localScale = new Vector3(pulso, pulso, 1f);
+
+            tBtn.text = $"IR CON LOS RESCATISTAS ({(int)tiempoRestante}s)";
+
+            tiempoRestante -= Time.deltaTime;
+            yield return null;
+        }
+
+        // Si se acaba el tiempo, ir a final_2
+        Destroy(btnRescateGO);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("final_2");
     }
 }

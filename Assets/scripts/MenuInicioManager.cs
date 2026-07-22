@@ -51,8 +51,10 @@ public class MenuInicioManager : MonoBehaviour
         tituloGO.transform.SetParent(canvasGO.transform, false);
         
         TextMeshProUGUI txtTitulo = tituloGO.AddComponent<TextMeshProUGUI>();
-        txtTitulo.text = "VULCAN";
-        txtTitulo.fontSize = 130;
+        txtTitulo.text = "BAJO LA CENIZA";
+        txtTitulo.enableAutoSizing = true;
+        txtTitulo.fontSizeMin = 40;
+        txtTitulo.fontSizeMax = 120;
         txtTitulo.alignment = TextAlignmentOptions.Center;
         txtTitulo.color = new Color(0.9f, 0.25f, 0.1f); // Rojo lava brillante
         
@@ -63,7 +65,7 @@ public class MenuInicioManager : MonoBehaviour
         RectTransform tituloRect = tituloGO.GetComponent<RectTransform>();
         tituloRect.anchorMin = new Vector2(0.5f, 0.7f);
         tituloRect.anchorMax = new Vector2(0.5f, 0.7f);
-        tituloRect.sizeDelta = new Vector2(800, 200);
+        tituloRect.sizeDelta = new Vector2(1200, 250);
         tituloRect.anchoredPosition = Vector2.zero;
 
         // 4. Crear Botón de Inicio

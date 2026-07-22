@@ -71,6 +71,7 @@ public class PersonajeInteraccion : MonoBehaviour
             // 3. Encendemos el panel y revelamos al personaje
             panelDialogo.SetActive(true);
             if (personaje_a_revelar != null) personaje_a_revelar.SetActive(true);
+            // Time.timeScale = 0f; // Descomenta si deseas pausar el juego
 
             // ¡NUEVO! Registramos el ID en la lista global al interactuar
             RegistrarPersonaje();
@@ -81,6 +82,12 @@ public class PersonajeInteraccion : MonoBehaviour
             panelDialogo.SetActive(false);
             yaFueUsado = true; 
             if (luzOEfectoPista != null) luzOEfectoPista.SetActive(false);
+            // Time.timeScale = 1f;
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.AvanzarFase();
+            }
         }
     }
 
@@ -120,6 +127,13 @@ public class PersonajeInteraccion : MonoBehaviour
                 if (personaje_a_revelar != null) personaje_a_revelar.SetActive(true);
                 yaFueUsado = true; 
                 if (luzOEfectoPista != null) luzOEfectoPista.SetActive(false);
+                
+                // Time.timeScale = 1f;
+
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.AvanzarFase();
+                }
                 
                 RegistrarPersonaje();
             }
