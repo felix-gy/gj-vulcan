@@ -188,20 +188,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AvanzarFaseDespuesDeDescubrimiento(PuntoDeInteres punto)
+    public void AvanzarFase()
     {
-        if (punto.idPunto == "lucas")
+        if (FaseActual == GriefPhase.Procesar)
         {
             IniciarFase(GriefPhase.Aceptar, "05:30 AM", "Busca a tu Madre cerca del Edificio Comunitario al este");
         }
-        else if (punto.idPunto == "madre")
+        else if (FaseActual == GriefPhase.Aceptar)
         {
             IniciarFase(GriefPhase.Reconstruir, "06:30 AM", "Sigue los ladridos al sur para encontrar a tu mascota Toby");
         }
-        else if (punto.idPunto == "toby")
+        else if (FaseActual == GriefPhase.Reconstruir)
         {
             if (uiManager != null) uiManager.MostrarEpilogo();
         }
+    }
+
+    public void AvanzarFaseDespuesDeDescubrimiento(PuntoDeInteres punto)
+    {
+        AvanzarFase();
     }
 
     private System.Collections.IEnumerator EfectoSacudidaCamara(float duracion, float magnitud)
