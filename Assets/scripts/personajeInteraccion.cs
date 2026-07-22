@@ -3,7 +3,7 @@ using TMPro; // Necesario para usar TextMeshPro en la UI
 using UnityEngine.UI; // Necesario para manipular componentes de Imagen en UI
 using UnityEngine.InputSystem; // Necesario para el nuevo Input System
 
-public class RocaInteractiva : MonoBehaviour
+public class PersonajeInteraccion : MonoBehaviour
 {
     [Header("Conexión con la UI")]
     public GameObject panelDialogo; // Arrastra aquí tu PanelDialogo
@@ -12,6 +12,10 @@ public class RocaInteractiva : MonoBehaviour
 
     [Header("Contenido del Diálogo")]
     public Sprite imagenPersonalizada; // Arrastra aquí la foto/sprite propia de ESTA roca
+
+    [Header("Personaje Escondido")]
+    public GameObject personaje_a_revelar; // Arrastra aquí el personaje que quieres revelar
+
 
     [TextArea(3, 5)]
     public string mensaje = "¡Parece que hay algo grabado en esta roca...! Es una pista.";
@@ -61,6 +65,7 @@ public class RocaInteractiva : MonoBehaviour
         {
             // Apagamos el panel y bloqueamos la interacción para siempre
             panelDialogo.SetActive(false);
+            personaje_a_revelar.SetActive(true);
             yaFueUsado = true; // ¡NUEVO! Marca el objeto como completado
             // Time.timeScale = 1f;
         }
@@ -88,6 +93,7 @@ public class RocaInteractiva : MonoBehaviour
             {
                 dialogoAbierto = false;
                 panelDialogo.SetActive(false);
+                personaje_a_revelar.SetActive(true);
                 yaFueUsado = true; // ¡NUEVO!
                 // Time.timeScale = 1f;
             }
